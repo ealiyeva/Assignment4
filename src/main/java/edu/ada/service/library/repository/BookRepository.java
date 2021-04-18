@@ -6,10 +6,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
     @Query("select p from Book p where upper(p.name) like concat('%', upper(?1), '%') or upper(p.category) like concat('%', upper(?2), '%') or upper(p.author) like concat('%', upper(?3), '%')")
     List<Book> getByNames(String name, String category, String author);
 
+    @Override
+    Optional<Book> findById(Long id);
 }

@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "books")
@@ -37,6 +38,16 @@ public class Book implements Serializable {
         this.user_id = userId;
     }
 
+    public Book(Book book) {
+        this.name = book.getName();
+        this.author=book.getAuthor();
+        this.description=book.getDescription();
+        this.category=book.getCategory();
+        this.published_at=book.getPublished_at();
+        this.user_id=book.getUser_id();
+        this.id=book.getId();
+    }
+
     @Override
     public String toString() {
 
@@ -49,4 +60,5 @@ public class Book implements Serializable {
                 ", user_id=" + user_id +
                 "}";
     }
+
 }

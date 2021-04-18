@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import edu.ada.service.library.model.Book;
+import edu.ada.service.library.model.BookDTO;
 
 public interface BookService {
 
@@ -21,6 +22,10 @@ public interface BookService {
 
     public List<Book> getBooksBy(String... args);
 
-    Optional<Book> findById(Long id);
+    static Optional<Book> findById(Long id) {
+        return null;
+    }
+
+    BookDTO getBookByID(Long book_id);
 
 }

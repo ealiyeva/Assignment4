@@ -66,5 +66,5 @@ public class AuthService {
         log.info("Successfully registered user with [email: {}]", user.getEmail());
 
         return userRepository.save(user).getId();
-        }
+    }
 }

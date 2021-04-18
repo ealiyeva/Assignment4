@@ -1,6 +1,8 @@
 package edu.ada.service.library.controller;
 
+import edu.ada.service.library.exception.NotFoundException;
 import edu.ada.service.library.model.Book;
+import edu.ada.service.library.model.BookDTO;
 import edu.ada.service.library.repository.BookRepository;
 import edu.ada.service.library.security.UserPrincipal;
 import edu.ada.service.library.service.BookService;
@@ -70,12 +72,38 @@ public class LibraryController {
         return new ResponseEntity<Object>(books, HttpStatus.OK);
     }
 
+
+    @GetMapping("/{id}")
+    public ResponseEntity getBookById(@PathVariable("id") int book_id) throws NotFoundException{
+        Optional<Book> book = BookService.findById((long) book_id);
+        if (book != null){
+            return ResponseEntity.ok(book);
+        }else{
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+    @GetMapping("/bookID/{bookID}")
+    public ResponseEntity getBookById(@PathVariable("bookID") Long book_id) throws NotFoundException{
+        BookDTO bookDTO = bookService.getBookByID(book_id);
+        if (bookDTO != null){
+            return ResponseEntity.ok(bookDTO);
+        }else{
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+
+
+
     @PutMapping("pickup/{id}")
     public @ResponseBody ResponseEntity<Object> pickupBook(@PathVariable String id, @AuthenticationPrincipal UserPrincipal userPrincipal) {
         JSONObject response = new JSONObject();
-        Optional<Book> book = bookService.findById(Long.parseLong(id));
-        Long userId = null;
+        Optional<Book> book = BookService.findById(Long.parseLong(id));
         Long bookId = null;
+        Long userId = null;
 
         if (book.isPresent()) {
             userId = book.get().getUser_id();
@@ -103,7 +131,7 @@ public class LibraryController {
     @PutMapping("drop/{id}")
     public @ResponseBody ResponseEntity<Object> dropBook(@PathVariable String id, @AuthenticationPrincipal UserPrincipal userPrincipal) {
         JSONObject response = new JSONObject();
-        Optional<Book> book = bookService.findById(Long.parseLong(id));
+        Optional<Book> book = BookService.findById(Long.parseLong(id));
         Long userId = null;
         Long bookId = null;
 
